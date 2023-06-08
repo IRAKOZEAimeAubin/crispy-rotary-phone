@@ -21,13 +21,24 @@
     </div>
     <button class="bg-red-200 font-bold p-2 rounded-lg uppercase" @click=" stopWatching ">Stop Watching</button>
   </div>
+  <div class="mt-3">
+    <div v-if="err">{{ err }}</div>
+    <div v-if="posts.length" class="flex flex-col items-center justify-center">
+      <Posts v-if="showPosts" :posts="posts"/>
+      <button class="bg-lime-200 font-bold p-2 rounded-lg uppercase mt-4" @click="showPosts = !showPosts">{{ showPosts ? "Hide Posts" : "Show Posts" }}</button>
+      <button class="bg-rose-200 font-bold p-2 rounded-lg uppercase mt-4" @click="posts.pop()">Delete Post</button>
+    </div>
+    <div v-else class="text-center font-bold">Loading...</div>
+  </div>
 </template>
 
 <script>
 import { ref, reactive, computed, watch, watchEffect } from 'vue';
+import Posts from './Posts.vue';
 
 export default {
   name: "Home",
+  components: { Posts },
   setup () {
     let name = ref( "Luigi" )
     let age = ref( 30 )
@@ -89,6 +100,26 @@ export default {
       stopWatchEffect()
     }
 
+    // using props
+    const posts = ref( [] )
+
+    // lifecycle hooks
+    const showPosts = ref( true )
+
+    // fetching data
+    const err = ref( null )
+    const load = async () => {
+      try {
+        let data = await fetch( "http://localhost:3000/posts" )
+        if ( !data.ok ) throw Error( "Data not available." )
+        posts.value = await data.json()
+      } catch (error) {
+        err.value = error.message
+      }
+    }
+
+    load()
+
     return {
       name,
       age,
@@ -101,7 +132,10 @@ export default {
       names,
       search,
       matchingNames,
-      stopWatching
+      stopWatching,
+      posts,
+      showPosts,
+      err
     }
   }
 }

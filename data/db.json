@@ -1,0 +1,16 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "Welcome to the blog!",
+      "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Justo donec enim diam vulputate ut pharetra. Augue lacus viverra vitae congue eu consequat ac. Nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Ipsum suspendisse ultrices gravida dictum fusce ut placerat orci nulla.",
+      "tags": ["webdev", "coding", "news"]
+    },
+    {
+      "id": 2,
+      "title": "5 CSS Tips and Tricks",
+      "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Turpis massa tincidunt dui ut ornare lectus sit amet. Curabitur gravida arcu ac tortor dignissim convallis aenean et. Ac turpis egestas maecenas pharetra convallis. Faucibus scelerisque eleifend donec pretium vulputate sapien.",
+      "tags": ["css", "coding", "webdev"]
+    }
+  ]
+}
