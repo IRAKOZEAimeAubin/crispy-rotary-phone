@@ -21,13 +21,18 @@
     </div>
     <button class="bg-red-200 font-bold p-2 rounded-lg uppercase" @click=" stopWatching ">Stop Watching</button>
   </div>
+  <div>
+    <Posts :posts="posts"/>
+  </div>
 </template>
 
 <script>
 import { ref, reactive, computed, watch, watchEffect } from 'vue';
+import Posts from './Posts.vue';
 
 export default {
   name: "Home",
+  components: { Posts },
   setup () {
     let name = ref( "Luigi" )
     let age = ref( 30 )
@@ -89,6 +94,12 @@ export default {
       stopWatchEffect()
     }
 
+    // using props
+    const posts = ref( [
+      { id: 1, title: "Welcome to the blog!", body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Justo donec enim diam vulputate ut pharetra. Augue lacus viverra vitae congue eu consequat ac. Nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Ipsum suspendisse ultrices gravida dictum fusce ut placerat orci nulla." },
+      { id: 2, title: "5 CSS Tips and Tricks", body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Turpis massa tincidunt dui ut ornare lectus sit amet. Curabitur gravida arcu ac tortor dignissim convallis aenean et. Ac turpis egestas maecenas pharetra convallis. Faucibus scelerisque eleifend donec pretium vulputate sapien." }
+    ] )
+
     return {
       name,
       age,
@@ -101,7 +112,8 @@ export default {
       names,
       search,
       matchingNames,
-      stopWatching
+      stopWatching,
+      posts
     }
   }
 }
