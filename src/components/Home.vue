@@ -21,8 +21,14 @@
     </div>
     <button class="bg-red-200 font-bold p-2 rounded-lg uppercase" @click=" stopWatching ">Stop Watching</button>
   </div>
-  <div>
-    <Posts :posts="posts"/>
+  <div class="mt-3">
+    <div v-if="err">{{ err }}</div>
+    <div v-if="posts.length" class="flex flex-col items-center justify-center">
+      <Posts v-if="showPosts" :posts="posts"/>
+      <button class="bg-lime-200 font-bold p-2 rounded-lg uppercase mt-4" @click="showPosts = !showPosts">{{ showPosts ? "Hide Posts" : "Show Posts" }}</button>
+      <button class="bg-rose-200 font-bold p-2 rounded-lg uppercase mt-4" @click="posts.pop()">Delete Post</button>
+    </div>
+    <div v-else class="text-center font-bold">Loading...</div>
   </div>
 </template>
 
@@ -95,10 +101,24 @@ export default {
     }
 
     // using props
-    const posts = ref( [
-      { id: 1, title: "Welcome to the blog!", body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Justo donec enim diam vulputate ut pharetra. Augue lacus viverra vitae congue eu consequat ac. Nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Ipsum suspendisse ultrices gravida dictum fusce ut placerat orci nulla." },
-      { id: 2, title: "5 CSS Tips and Tricks", body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Turpis massa tincidunt dui ut ornare lectus sit amet. Curabitur gravida arcu ac tortor dignissim convallis aenean et. Ac turpis egestas maecenas pharetra convallis. Faucibus scelerisque eleifend donec pretium vulputate sapien." }
-    ] )
+    const posts = ref( [] )
+
+    // lifecycle hooks
+    const showPosts = ref( true )
+
+    // fetching data
+    const err = ref( null )
+    const load = async () => {
+      try {
+        let data = await fetch( "http://localhost:3000/posts" )
+        if ( !data.ok ) throw Error( "Data not available." )
+        posts.value = await data.json()
+      } catch (error) {
+        err.value = error.message
+      }
+    }
+
+    load()
 
     return {
       name,
@@ -113,7 +133,9 @@ export default {
       search,
       matchingNames,
       stopWatching,
-      posts
+      posts,
+      showPosts,
+      err
     }
   }
 }
