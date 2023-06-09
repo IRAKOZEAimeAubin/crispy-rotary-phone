@@ -35,6 +35,7 @@
 <script>
 import { ref, reactive, computed, watch, watchEffect } from 'vue';
 import Posts from './Posts.vue';
+import getPosts from '../composables/getPosts'
 
 export default {
   name: "Home",
@@ -101,23 +102,25 @@ export default {
     }
 
     // using props
-    const posts = ref( [] )
+    // const posts = ref( [] )
 
     // lifecycle hooks
     const showPosts = ref( true )
 
     // fetching data
-    const err = ref( null )
-    const load = async () => {
-      try {
-        let data = await fetch( "http://localhost:3000/posts" )
-        if ( !data.ok ) throw Error( "Data not available." )
-        posts.value = await data.json()
-      } catch (error) {
-        err.value = error.message
-      }
-    }
-
+    // const err = ref( null )
+    // const load = async () => {
+    //   try {
+    //     let data = await fetch( "http://localhost:3000/posts" )
+    //     if ( !data.ok ) throw Error( "Data not available." )
+    //     posts.value = await data.json()
+    //   } catch (error) {
+    //     err.value = error.message
+    //   }
+    // }
+    // reusable composable functions
+    const { posts, err, load } = getPosts()
+    
     load()
 
     return {
